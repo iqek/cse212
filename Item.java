@@ -25,15 +25,16 @@ public class Item {
         double vw = calculateVolumetricWeight();
         double rate = 0;
 
-        if(vw > 3){
-                rate = 0.5;
-            } else if(vw > 2){
-                rate = 0.35;
-            } else if(vw > 1){
-                rate = 0.25;
-            }
-
-            return (itemPrice * vw * rate);
+        if (vw < 1) {
+            rate = 0.10;
+        } else if (vw < 2) {
+            rate = 0.25;
+        } else if (vw < 5) {
+            rate = 0.35;
+        } else {
+            rate = 0.50;
+        }
+        return itemPrice * vw * rate;
     }
 
     public double calculateTotalWorth(){
@@ -65,5 +66,8 @@ public class Item {
         return type;
     }
 
+    public double setItemPrice(double price){
+        return this.itemPrice = price;
+    }
 
 }

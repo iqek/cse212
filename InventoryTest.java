@@ -17,10 +17,12 @@ public class InventoryTest {
             System.out.println("2. Display all Items");
             System.out.println("3. Display the Total Number of Items");
             System.out.println("4. Calculate the Total Worth of the Inventory");
+            System.out.println("5. Increase Price of Specific Type");
+            System.out.println("6. List Items with Shipping Fee Above a Limit");
             System.out.println("CUSTOMER MENU:");
-            System.out.println("5. Add an Order");
-            System.out.println("6. Calculate Order Cost");
-            System.out.println("7. Exit");
+            System.out.println("7. Add an Order");
+            System.out.println("8. Calculate Order Cost");
+            System.out.println("9. Exit");
 
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
@@ -114,6 +116,25 @@ public class InventoryTest {
                     inventory.calculateTotalWorth();
                     break;
 
+                case INC_PRICE:
+                    System.out.print("Which type of items will be raised in price?: ");
+                    String raiseType = scanner.nextLine();
+ 
+                    System.out.print("How much will the raise ratio(%) be?: ");
+                    double raisePercent = scanner.nextDouble();
+                    scanner.nextLine();
+ 
+                    inventory.increasePrice(raiseType, raisePercent, orders);
+                    break;
+ 
+                case ABOVE_LIMIT:
+                    System.out.print("Enter a limit: ");
+                    double limit = scanner.nextDouble();
+                    scanner.nextLine();
+ 
+                    inventory.listAboveShippingLimit(limit);
+                    break;
+
                 case ADD_ORDER:
                     System.out.print("Enter the item name you want to order: ");
                     String orderName = scanner.nextLine();
@@ -135,7 +156,7 @@ public class InventoryTest {
                         break;
                     }
  
-                    Order newOrder = new Order(foundItem, foundItem.getItemType());
+                    Order newOrder = new Order(foundItem);
                     newOrder.setQuantity(orderQuantity);
  
                     if (newOrder.checkStorage()) {

@@ -1,12 +1,10 @@
 public class Order {
 
     private Item item;
-    private String type;
     private int quantity;
 
-    public Order(Item item, String type) {
+    public Order(Item item) {
         this.item = item;
-        this.type = type;
     }
 
     public boolean checkStorage() {
@@ -31,20 +29,12 @@ public class Order {
         return this.item = item;
     }
 
-    public String setType(String type){
-        return this.type = type;
-    }
-
     public int setQuantity(int quantity){
         return this.quantity = quantity;
     }
 
     public Item getItem(){
         return item;
-    }
-
-    public String getType(){
-        return type;
     }
 
     public int getQuantity(){
