@@ -6,10 +6,11 @@ public enum Menu{
     TOTAL_WORTH(4),
     INC_PRICE(5),
     ABOVE_LIMIT(6),
+    REMOVE_CITY(7),
 
-    ADD_ORDER(7),
-    ORDER_COST(8),
-    EXIT(9);
+    ADD_ORDER(8),
+    ORDER_COST(9),
+    EXIT(10);
 
     private int value;
 

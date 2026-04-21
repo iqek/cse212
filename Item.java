@@ -1,4 +1,4 @@
-public class Item {
+public abstract class Item implements Service {
     private String itemName;
     private double itemPrice;
     private int itemQuantity;
@@ -13,32 +13,27 @@ public class Item {
         this.type = type;
     }
 
-    public void updateQuantity (int purchasedQ){
-        this.itemQuantity -= purchasedQ;
+    public abstract void updateQuantity (int purchased);
+
+    public abstract double calculateTotalWorth();
+
+    public abstract double calculateVolumetricWeight ();
+
+    public abstract double calculateShippingFee();
+
+    @Override
+    public double calculateService() {
+        return itemPrice * itemQuantity;
     }
-
-    public double calculateVolumetricWeight (){
-        return 0;
+ 
+    @Override
+    public String getServiceType() {
+        return type;
     }
-
-    public double calculateShippingFee(){
-        double vw = calculateVolumetricWeight();
-        double rate = 0;
-
-        if (vw < 1) {
-            rate = 0.10;
-        } else if (vw < 2) {
-            rate = 0.25;
-        } else if (vw < 5) {
-            rate = 0.35;
-        } else {
-            rate = 0.50;
-        }
-        return itemPrice * vw * rate;
-    }
-
-    public double calculateTotalWorth(){
-        return (itemPrice + calculateShippingFee()) * itemQuantity;
+ 
+    @Override
+    public void displayServiceInfo() {
+        displayItem();
     }
 
     public void displayItem() {
@@ -68,6 +63,10 @@ public class Item {
 
     public double setItemPrice(double price){
         return this.itemPrice = price;
+    }
+
+    public int setItemQuantity(int quantity){
+        return this.itemQuantity = quantity;
     }
 
 }

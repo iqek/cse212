@@ -3,44 +3,44 @@ import java.util.ListIterator;
 
 public class Inventory {
 
-    //array list of items
-    private ArrayList<Item> items;
+    private ArrayList<Service> services;
 
     public Inventory() {
-        items = new ArrayList<>();
+        services = new ArrayList<>();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
+    public void addService(Service service) {
+        services.add(service);
     }
 
-    public void displayAllItems() {
-        if(items.isEmpty()){
-            System.out.println("Inventory is empty");
+    public void displayAllServices() {
+        if (services.isEmpty()) {
+            System.out.println("Inventory is empty.");
             return;
         }
-        for(Item item:items){
-            item.displayItem();
+        for (Service s : services) {
+            s.displayServiceInfo();
         }
     }
 
-    public int getTotalNumberOfItems() {
-        return items.size();
+    public int getTotalNumberOfServices() {
+        return services.size();
     }
 
     public void calculateTotalWorth() {
-        for(Item item:items){
-            System.out.println("Total Worth of Item " + item.getItemName() + " : " + item.calculateTotalWorth());
+        for (Service s : services) {
+            System.out.println("Total Worth of Service " + s.getServiceType() + ": $" + s.calculateService());
         }
     }
 
     public void increasePrice(String type, double raisePercent, ArrayList<Order> orders) {
-        ListIterator<Item> it = items.listIterator();
- 
+        ListIterator<Service> it = services.listIterator();
+
         while (it.hasNext()) {
-            Item item = it.next();
- 
-            if (item.getItemType().equalsIgnoreCase(type)) {
+            Service s = it.next();
+
+            if (s instanceof Item && s.getServiceType().equalsIgnoreCase(type)) {
+                Item item = (Item) s;
                 boolean alreadyOrdered = false;
                 for (Order o : orders) {
                     if (o.getItem() == item) {
@@ -48,40 +48,39 @@ public class Inventory {
                         break;
                     }
                 }
- 
                 if (!alreadyOrdered) {
                     item.setItemPrice(item.getItemPrice() * (1 + raisePercent / 100));
                 }
             }
         }
- 
+
         System.out.println("The raise ratio was applied to " + type + " items.");
-        displayAllItems();
+        displayAllServices();
     }
- 
+
     public void listAboveShippingLimit(double limit) {
-        ArrayList<Item> above = new ArrayList<>();
-        ListIterator<Item> it = items.listIterator();
- 
+        ArrayList<Service> above = new ArrayList<>();
+        ListIterator<Service> it = services.listIterator();
+
         while (it.hasNext()) {
-            Item item = it.next();
-            if (item.calculateShippingFee() > limit) {
-                above.add(item);
+            Service s = it.next();
+            if (s.calculateShippingFee() > limit) {
+                above.add(s);
             }
         }
- 
+
         if (above.isEmpty()) {
             System.out.println("There is no item with a shipping fee over this limit.");
         } else {
             System.out.println("Items with shipping fees over " + limit + ":");
-            for (Item item : above) {
+            for (Service s : above) {
                 System.out.printf("Item: %s, Shipping Fee: %.2f%n",
-                        item.getItemName(), item.calculateShippingFee());
+                        s.getServiceType(), s.calculateShippingFee());
             }
         }
     }
 
-    public ArrayList<Item> getItems(){
-        return items;
-    } 
+    public ArrayList<Service> getServices() {
+        return services;
+    }
 }

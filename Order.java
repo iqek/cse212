@@ -1,19 +1,27 @@
 public class Order {
 
-    private Item item;
+    private Service service;
     private int quantity;
 
-    public Order(Item item) {
-        this.item = item;
+    private String destinationRegion;
+    private String destinationCity;
+    private int destinationPostCode;
+
+    public Order(Service service) {
+        this.service = service;;
     }
 
     public boolean checkStorage() {
-        if(item.getItemQuantity() >= quantity){
-            item.updateQuantity(quantity);
-            return true;
-        } 
-        System.out.println("Insufficient stock. Available quantity: " + item.getItemQuantity());
-        return false;
+        if (service instanceof Item) {
+            Item item = (Item) service;
+            if (item.getItemQuantity() >= quantity) {
+                item.updateQuantity(quantity);
+                return true;
+            }
+            System.out.println("Insufficient stock. Available quantity: " + item.getItemQuantity());
+            return false;
+        }
+        return true;
     }
 
     public void displayOrderInfo() {
@@ -21,23 +29,32 @@ public class Order {
     }
 
     public void calculateOrderCost() {
-        double cost = (item.getItemPrice() + item.calculateShippingFee()) * quantity;
-        System.out.println("The total cost of " + item.getItemName() + " order is: " + cost);
+        String name;
+        if (service instanceof Item) {
+            name = ((Item) service).getItemName();
+        } else if (service instanceof FoodDelivery) {
+            name = ((FoodDelivery) service).getFoodName();
+        } else if (service instanceof Streaming) {
+            name = ((Streaming) service).getTitle();
+        } else {
+            name = service.getServiceType();
+        }
+        System.out.println("The total cost of " + name + " order is: $" + service.calculateService());
     }
 
-    public Item setItem(Item item){
-        return this.item = item;
-    }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setDestinationRegion(String region) { this.destinationRegion = region; }
+    public void setDestinationCity(String city) { this.destinationCity = city; }
+    public void setDestinationPostCode(int postCode) { this.destinationPostCode = postCode; }
+ 
+    public Service getService() { return service; }
+    public int getQuantity() { return quantity; }
+    public String getDestinationCity() { return destinationCity; }
 
-    public int setQuantity(int quantity){
-        return this.quantity = quantity;
-    }
-
-    public Item getItem(){
-        return item;
-    }
-
-    public int getQuantity(){
-        return quantity;
+    public Item getItem() {
+        if (service instanceof Item){
+            return (Item) service;
+        }
+        return null;
     }
 }
